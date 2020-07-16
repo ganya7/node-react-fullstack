@@ -9,17 +9,18 @@ passport.use(new GoogleStrategy({
     clientID: keys.googleClientID,
     clientSecret: keys.googleClientSecret,
     callbackURL: '/auth/google/callback'
-}, (accessToken) => {
-    console.log(accessToken);
+}, (accessToken, refreshToken, profile, done) => {
+    console.log("at: " + accessToken);
+    console.log("rt: " + refreshToken);
+    console.log("p: " + JSON.stringify(profile));
+    console.log("d: " + done);
 }));
-/* 
-app.get('/', (req, res) => {
-    res.send({ 'hi': 'there' });
-});
- */
 
 app.get('/auth/google', passport.authenticate('google', {
     scope: ['profile', 'email']
 }));
+
+app.get('/auth/google/callback', passport.authenticate('google'));
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
