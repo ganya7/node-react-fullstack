@@ -20,7 +20,7 @@ passport.deserializeUser((id, done) => {
 });
 
 
-passport.use(new GoogleStrategy({
+/* passport.use(new GoogleStrategy({
     clientID: keys.googleClientID,
     clientSecret: keys.googleClientSecret,
     callbackURL: '/auth/google/callback',
@@ -37,4 +37,25 @@ passport.use(new GoogleStrategy({
             }
         }
     );
-}));
+})); */
+
+// es2017 async await refactor (converting promise syntax)
+passport.use(new GoogleStrategy({
+    clientID: keys.googleClientID,
+    clientSecret: keys.googleClientSecret,
+    callbackURL: '/auth/google/callback',
+    proxy: true
+},
+    async (accessToken, refreshToken, profile, done) => {
+        const existingUser = await User.findOne({ googleID: profile.id });
+        if (existingUser) {
+            // done(null, existingUser);
+            return done(null, existingUser);
+        }
+        /*  else {
+            const user = await new User({ googleID: profile.id }).save();
+            done(null, user);
+        } */
+        const user = await new User({ googleID: profile.id }).save();
+        done(null, user);
+    }));
