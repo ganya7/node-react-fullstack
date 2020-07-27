@@ -6,7 +6,6 @@ import StripeCheckout from "react-stripe-checkout";
 class Payments extends Component {
     render() {
         // debugger;
-        console.log(("Stripe env: ", process.env.REACT_APP_STRIPE_KEY));
         return (
             <StripeCheckout
                 name="Emaily"
