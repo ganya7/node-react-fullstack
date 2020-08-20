@@ -3,6 +3,7 @@ const express = require('express');
 // require('./services/passport');      //the order of requiring User and passport is important as we want
 // to create the model user first which is then used by passport
 require('./models/User');
+require('./models/Survey');
 require('./services/passport');
 // const authRoutes = require('./routes/authRoutes');
 const mongoose = require('mongoose');
@@ -26,6 +27,7 @@ app.use(passport.session());
 // authRoutes(app);
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
     // express will serve the production assets
@@ -38,10 +40,10 @@ if (process.env.NODE_ENV === 'production') {
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     });
- /*    const root = require('path').join(__dirname, 'client', 'build')
-    app.get("*", (req, res) => {
-        res.sendFile('index.html', { root });
-    }); */
+    /*    const root = require('path').join(__dirname, 'client', 'build')
+       app.get("*", (req, res) => {
+           res.sendFile('index.html', { root });
+       }); */
 }
 
 const PORT = process.env.PORT || 5000;

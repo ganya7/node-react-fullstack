@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const userSchema = Schema({
     googleID: String,
-    credits: {type: Number, default: 0}
+    credits: { type: Number, default: 0 }
 });
 
-mongoose.model('users',userSchema);
+mongoose.model('users', userSchema);
