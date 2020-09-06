@@ -1,22 +1,5 @@
-/* const keys = require('../config/keys');
-const sgMail = require('@sendgrid/mail');
-
-module.exports = async ({ subject, recipients }, content) => {
-  // using SendGrid's v3 Node.js Library
-  // https://github.com/sendgrid/sendgrid-nodejs
-  sgMail.setApiKey(keys.sendGridKey);
-  const formattedRecipients = recipients.map(({email}) => email);
-  const msg = {
-    to: formattedRecipients,
-    from: 'no-reply@emaily.com',
-    subject: subject,
-    html: content,
-  };
-  await sgMail.send(msg);
-} */
-
-
-
+// working code 1
+/* 
 module.exports = async () => {
     const keys = require('../config/keys');
 const sgMail = require('@sendgrid/mail');
@@ -39,8 +22,11 @@ const msg = {
     }
   }
 
+ */ 
 
-/* const keys = require('../config/keys');
+//  working code 2
+
+const keys = require('../config/keys');
 const sgMail = require('@sendgrid/mail');
 
 module.exports = async ({ subject, recipients }, content) => {
@@ -57,42 +43,10 @@ module.exports = async ({ subject, recipients }, content) => {
   };
   return await sgMail.send(msg);
 }
- */
-/* 
-const sgMail = require('@sendgrid/mail'); // separate Node package
-const helpers = require('@sendgrid/helpers'); // separate Node package
-const keys = require('../config/keys'); // some place where you store your API keys
 
-class Mailer extends helpers.classes.Mail {
-    // Through the use of Static methods from the Mail helper Class, you create a sendgrid compliant instance that can be send easily
-    constructor({ subject, recipients }, content) {
-        super();
-        // this.setFrom('no-reply@emaily.com'); // uses the EmailAddress.create method
-        this.setFrom('excoolzola@gmail.com'); // uses the EmailAddress.create method
-        this.setSubject(subject);
-        this.addHtmlContent(content); // same as addContent, but more specific for HTML
 
-        this.recipients = recipients.map(({ email }) =>
-            helpers.classes.EmailAddress.create(email)
-        );
 
-        this.setTrackingSettings({
-            clickTracking: { enable: true, enableText: true },
-        });
-
-        this.addTo(this.recipients); // This uses the personalization method in the background
-    }
-
-    // To separate our data from what we send out, we create another function
-    async send() {
-        sgMail.setApiKey(keys.sendGridKey);
-
-        return await sgMail.send(this.toJSON); // attach the current instance to be send out with SendGrid
-    }
-}
-
-module.exports = Mailer;
- */
+// deprecated old stephen grider sendgrid lib code 
 
 /* 
 const sendgrid = require('sendgrid');

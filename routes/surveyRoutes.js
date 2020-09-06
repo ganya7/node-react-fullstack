@@ -22,9 +22,10 @@ module.exports = app => {
         });
 
         // const mailer = new Mailer(survey, surveyTemplate(survey));
-        const m = Mailer();
         // mailer.send();
-        // const m = Mailer(survey, surveyTemplate(survey));
+        
+        // const m = Mailer();      //working 1
+        const m = Mailer(survey, surveyTemplate(survey));   // working 2
 
 
     });
