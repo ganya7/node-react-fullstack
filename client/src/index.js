@@ -7,6 +7,7 @@ import App from "./components/App";
 import reducers from "./reducers";
 import reduxThunk from "redux-thunk";
 
+// development only axios helpers
 import axios from "axios";
 window.axios = axios;
 
