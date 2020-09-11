@@ -4,6 +4,8 @@ const requireLogin = require('../middlewares/requireLogin');
 const requireCredits = require('../middlewares/requireCredits');
 const Mailer = require('../services/Mailer');
 const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
+const Path = require('path-parser');
+const {URL} = require('url');
 
 const Survey = mongoose.model('surveys');
 
@@ -16,7 +18,32 @@ module.exports = app => {
     });
 
     app.post('/api/surveys/webhooks', (req, res) => {
-        console.log(req.body);
+        // console.log(req.body);
+        // res.send({});
+        // const events = _.map(req.body, (event)=>{
+        const pathname = new URL(url).pathname;
+        const events = _.map(req.body, ({email,url})=>{
+        
+            /* const pathname = new URL(url).pathname;
+            const p = new Path('/api/surveys/:surveryId/:choice');
+            const match = p.test(pathname); */
+        
+            const match = p.test(new Path('/api/surveys/:surveyId/:choice'));
+
+            // we cannot destructure match into {surveyId, choice} because
+            // it can also be null that cannot be destructure and therefore 
+            // we cannot do default destructuring
+            if(match){
+                return {
+                    email,
+                    surveyId: match.surveyId,
+                    choice: match.choice
+                };
+            }
+        });
+        const compactEvents = _.compact(events);
+        const uniqEvents = _.uniqBy(compactEvents, 'email','surveyId');
+        console.log(uniqEvents);
         res.send({});
     })
 
@@ -44,12 +71,12 @@ module.exports = app => {
         }
         try {
             await survey.save();
-            // }
-            // catch (err) {
-            // res.status(442).send(err);
-            // }
+            }
+            catch (err) {
+            res.status(442).send(err);
+            }
             // await m.send();
-            // try {
+            try {
             req.user.credits -= 1;
             const user = await req.user.save();
             res.send(user);     // this is done so that the header in the app updates the credit of the user
