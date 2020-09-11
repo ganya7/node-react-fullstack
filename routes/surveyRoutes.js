@@ -11,7 +11,7 @@ module.exports = app => {
     // since we havent created a route on the react, we need to ensure that we pass along
     // these properties to the front end 
 
-    app.get('/api/surveys/thanks',(req,res)=>{
+    app.get('/api/surveys/thanks', (req, res) => {
         res.send('Thank you for giving your feedback and appreciate your valuable time.');
     });
 
@@ -32,18 +32,19 @@ module.exports = app => {
         // const m = Mailer();      //working 1
         // const m = await Mailer(survey, surveyTemplate(survey));   // working 2
         try {
-            await Mailer(survey, surveyTemplate(survey));   // working 2
+            Mailer(survey, surveyTemplate(survey));   // working 2
+
         } catch (err) {
             res.status(432).send(err);
         }
         try {
             await survey.save();
-        }
-        catch (err) {
-            res.status(442).send(err);
-        }
-        // await m.send();
-        try {
+            // }
+            // catch (err) {
+            // res.status(442).send(err);
+            // }
+            // await m.send();
+            // try {
             req.user.credits -= 1;
             const user = await req.user.save();
             res.send(user);     // this is done so that the header in the app updates the credit of the user

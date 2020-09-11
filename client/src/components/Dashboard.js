@@ -5,9 +5,9 @@ const Dashboard = () => {
     return (
         <div>
             Dashboard
-            <div class="fixed-action-btn">
-                <Link to="/surveys/new" href="" class="btn-floating btn-large red">
-                    <i class="material-icons">add</i>
+            <div className="fixed-action-btn">
+                <Link to="/surveys/new" href="" className="btn-floating btn-large red">
+                    <i className="material-icons">add</i>
                 </Link>
             </div>
         </div>
