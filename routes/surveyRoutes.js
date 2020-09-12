@@ -10,9 +10,16 @@ const { URL } = require('url');
 const Survey = mongoose.model('surveys');
 
 module.exports = app => {
+
+
+    app.get('/api/surveys', async (req, res) => {
+        const surveys = await Survey.find({ _user: req.user.id })
+            .select({ recipients: false });
+        res.send(surveys);
+    });
+
     // since we havent created a route on the react, we need to ensure that we pass along
     // these properties to the front end 
-
     // app.get('/api/surveys/thanks', (req, res) => {
     app.get('/api/surveys/:surveyId/:choice', (req, res) => {
         res.send('Thank you for giving your feedback and appreciate your valuable time.');
@@ -68,7 +75,7 @@ module.exports = app => {
             })
             .compact()
             .uniqBy('email', 'surveyId')
-            .each(({surveyId,email,choice}) => {
+            .each(({ surveyId, email, choice }) => {
                 Survey.updateOne({
                     _id: surveyId,
                     recipients: {
